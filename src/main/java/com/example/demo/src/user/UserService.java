@@ -3,15 +3,15 @@ package com.example.demo.src.user;
 
 import com.example.demo.config.BaseException;
 
-import com.example.demo.src.user.model.PatchUserReq;
-import com.example.demo.src.user.model.PostUserReq;
-import com.example.demo.src.user.model.PostUserRes;
+import com.example.demo.src.user.model.*;
 import com.example.demo.utils.JwtService;
 import com.example.demo.utils.SHA256;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpServerErrorException;
+import org.springframework.web.server.ServerErrorException;
 
 import static com.example.demo.config.BaseResponseStatus.*;
 
@@ -24,7 +24,6 @@ public class UserService {
     private final UserProvider userProvider;
     private final JwtService jwtService;
 
-
     @Autowired
     public UserService(UserDao userDao, UserProvider userProvider, JwtService jwtService) {
         this.userDao = userDao;
@@ -33,6 +32,16 @@ public class UserService {
 
     }
 
+
+    public DeleteUserRes deleteUser(DeleteUserReq deleteUserReq) throws BaseException{
+        try{
+            DeleteUserRes deleteUsersRes = userDao.deleteUser(deleteUserReq);
+            return deleteUsersRes;
+        }
+        catch(Exception exception){
+            throw new BaseException(USERS_FAILED_USER_ID);
+        }
+    }
 
     public PostUserRes createUser(PostUserReq postUserReq) throws BaseException {
         // 이메일 중복 확인
@@ -68,5 +77,7 @@ public class UserService {
             throw new BaseException(DATABASE_ERROR);
         }
     }
+
+
 
 }

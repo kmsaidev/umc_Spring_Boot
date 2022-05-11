@@ -7,8 +7,8 @@ spring:
 
   datasource:
     platform: mysql
-    url:  # 변경해주세요
-    username:
-    password:
+    url: jdbc:mysql://umcsom-db.c357ki5cx8fu.ap-northeast-2.rds.amazonaws.com:3306/UMC-server # 변경해주세요
+    username: master
+    password: System2000
     driver-class-name: com.mysql.cj.jdbc.Driver # mysql 8버전
     # driver-class-name: com.mysql.jdbc.Driver # mysql 5버전
