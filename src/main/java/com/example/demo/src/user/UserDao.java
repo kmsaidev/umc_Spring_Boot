@@ -94,14 +94,14 @@ public class UserDao {
     public DeleteUserRes deleteUser(DeleteUserReq deleteUserReq){
         int userIdx = deleteUserReq.getUserIdx();
         int deleteUserParams = userIdx;
-        String selectUserQuery = "select name, nickName, email, phone, password from User where userIdx=?";
+        String selectUserQuery = "select name, nickName, email, phone, pwd from User where userIdx=?";
         DeleteUserRes deleteUserRes = this.jdbcTemplate.queryForObject(selectUserQuery,
                 (rs, rowNum) -> new DeleteUserRes(
                         rs.getString("name"),
                         rs.getString("nickName"),
                         rs.getString("email"),
                         rs.getString("phone"),
-                        rs.getString("password")),
+                        rs.getString("pwd")),
                 deleteUserParams);
         String deleteUserQuery = "delete from User where userIdx=?";
         this.jdbcTemplate.update(deleteUserQuery, deleteUserParams);
@@ -109,12 +109,12 @@ public class UserDao {
     }
 
     public int createUser(PostUserReq postUserReq){
-        String createUserQuery = "insert into User (name, nickName, phone, email, password) VALUES (?,?,?,?,?)";
-        Object[] createUserParams = new Object[]{postUserReq.getName(), postUserReq.getNickName(),postUserReq.getPhone(), postUserReq.getEmail(), postUserReq.getPassword()};
+        String createUserQuery = "insert into User (name, nickName, phone, email, pwd) VALUES (?,?,?,?,?)";
+        Object[] createUserParams = new Object[]{postUserReq.getName(), postUserReq.getNickName(), postUserReq.getPhone(), postUserReq.getEmail(), postUserReq.getPwd()};
         this.jdbcTemplate.update(createUserQuery, createUserParams);
 
-        String lastInserIdQuery = "select last_insert_id()";
-        return this.jdbcTemplate.queryForObject(lastInserIdQuery,int.class);
+        String lastInsertIdQuery = "select last_insert_id()";
+        return this.jdbcTemplate.queryForObject(lastInsertIdQuery,int.class);
     }
 
     public int checkEmail(String email){

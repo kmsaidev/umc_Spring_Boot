@@ -7,9 +7,6 @@ import com.example.demo.src.post.model.GetPostsRes;
 import com.example.demo.src.post.model.PatchPostsReq;
 import com.example.demo.src.post.model.PostPostsReq;
 import com.example.demo.src.post.model.PostPostsRes;
-import com.example.demo.src.user.UserProvider;
-import com.example.demo.src.user.UserService;
-import com.example.demo.src.user.model.GetUserFeedRes;
 import com.example.demo.utils.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -47,6 +44,9 @@ public class PostController {
     @PostMapping("")
     public BaseResponse<PostPostsRes> createPosts(@RequestBody PostPostsReq postPostsReq) {
         try{
+            int userIdxByJwt = jwtService.getUserIdx();
+            if(postPostsReq.getUserIdx() != userIdxByJwt)
+                return new BaseResponse<>(BaseResponseStatus.INVALID_USER_JWT);
 //          형식적 validation 처리
             if(postPostsReq.getContent().length() > 450)
                 return new BaseResponse<>(BaseResponseStatus.POST_POSTS_INVALID_CONTENTS);

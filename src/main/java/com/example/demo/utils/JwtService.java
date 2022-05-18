@@ -70,4 +70,17 @@ public class JwtService {
         return claims.getBody().get("userIdx",Integer.class);
     }
 
+    public int getUserIdxByJwt(String jwt) throws BaseException{
+        Jws<Claims> claims;
+        try{
+            claims = Jwts.parser()
+                    .setSigningKey(Secret.JWT_SECRET_KEY)
+                    .parseClaimsJws(jwt);
+        } catch (Exception ignored) {
+            throw new BaseException(INVALID_JWT);
+        }
+
+        return claims.getBody().get("userIdx",Integer.class);
+    }
+
 }
